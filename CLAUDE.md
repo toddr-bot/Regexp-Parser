@@ -62,7 +62,7 @@ GitHub Actions: `.github/workflows/testsuite.yml`
 
 Most Perl 5.10+ constructs are now supported. Remaining gaps:
 - `(?(DEFINE)...)` definition-only groups
-- `(?{ code })` / `(??{ code })` execute correctly at parse time but code blocks are opaque
+- `(?{ code })` / `(??{ code })` — code blocks are parsed correctly and accessible via `$node->code()`, but the Perl code inside is treated as an opaque string (not further parsed)
 
 ## Gotchas
 

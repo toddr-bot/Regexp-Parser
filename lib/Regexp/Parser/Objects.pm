@@ -1339,6 +1339,16 @@ use NEXT;
     return $self;
   }
 
+  sub code {
+    my $self = shift;
+    $self->{data};
+  }
+
+  sub data {
+    my $self = shift;
+    $self->{data};
+  }
+
   sub visual {
     my $self = shift;
     "(?{$self->{data}})";
@@ -1376,6 +1386,16 @@ use NEXT;
       zerolen => 1,
     }, $class;
     return $self;
+  }
+
+  sub code {
+    my $self = shift;
+    $self->{data};
+  }
+
+  sub data {
+    my $self = shift;
+    $self->{data};
   }
 
   sub visual {
@@ -2439,7 +2459,9 @@ Family: assertion
 
 Types: eval (C<(?{>)
 
-Data: string with contents of assertion
+Data: string with contents of code block (the Perl code between C<(?{> and C<})>).
+Access via C<< $node->code >> or C<< $node->data >>. The code is captured as-is
+including nested braces; it is not parsed or executed by the module.
 
 =head2 logical
 
@@ -2447,7 +2469,9 @@ Family: assertion
 
 Types: logical (C<(??{>)
 
-Data: string with contents of assertion
+Data: string with contents of code block (the Perl code between C<(??{> and C<})>).
+Access via C<< $node->code >> or C<< $node->data >>. The code is captured as-is
+including nested braces; it is not parsed or executed by the module.
 
 =head2 flags
 
