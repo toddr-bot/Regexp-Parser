@@ -873,6 +873,12 @@ sub init {
       &RxPOS--;
     }
 
+    # (?(DEFINE)...) definition-only group
+    if (${&Rx} =~ m{ \G DEFINE \) }xgc) {
+      push @{ $S->{next} }, qw< ifthen|2 ifthen| ifthen_atom >;
+      return $S->object(define =>);
+    }
+
     if (${&Rx} =~ m{ \G ( [1-9]\d* ) }xgc) {
       my $n = $1;
       $S->error($S->RPe_SWNREC) if ${&Rx} !~ m{ \G \) }xgc;

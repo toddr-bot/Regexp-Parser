@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 94;
+use Test::More tests => 122;
 use Regexp::Parser;
 
 my $r = Regexp::Parser->new;
@@ -16,6 +16,8 @@ my @good_rx = (
   q{(?(?<!a|b)c|d)},
   q{(?(?{1})c|d)},
   q{(?(1)c|d)},
+  q{(?(DEFINE)(?<foo>bar))},
+  q{(?(DEFINE)(?<digit>[0-9])(?<word>[a-z]+))},
 );
 
 my @bad_rx = (
@@ -121,5 +123,29 @@ DONE
 2	exact	exact	c
 1	branch	branch
 2	exact	exact	d
+0	close	tail
+DONE
+0	assertion	ifthen	(?(DEFINE)(?<foo>bar))
+1	define	define	(DEFINE)
+1	branch	branch	(?<foo>bar)
+2	open	open1	(?<foo>bar)
+3	exact	exact	bar
+2	close	close1
+0	close	tail
+DONE
+0	assertion	ifthen	(?(DEFINE)(?<digit>[0-9])(?<word>[a-z]+))
+1	define	define	(DEFINE)
+1	branch	branch	(?<digit>[0-9])(?<word>[a-z]+)
+2	open	open1	(?<digit>[0-9])
+3	anyof	anyof	[0-9]
+4	anyof_range	anyof_range	0-9
+3	close	anyof_close
+2	close	close1
+2	open	open2	(?<word>[a-z]+)
+3	quant	plus	[a-z]+
+4	anyof	anyof	[a-z]
+5	anyof_range	anyof_range	a-z
+4	close	anyof_close
+2	close	close2
 0	close	tail
 DONE
