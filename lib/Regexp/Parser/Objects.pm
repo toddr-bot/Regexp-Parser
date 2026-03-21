@@ -1323,6 +1323,34 @@ use NEXT;
 
 
 {
+  # the DEFINE in (?(DEFINE)...)
+  package Regexp::Parser::define;
+  our @ISA = qw( Regexp::Parser::__object__ );
+
+  sub new {
+    my ($class, $rx) = @_;
+    bless {
+      rx => $rx,
+      flags => $rx->{flags}[-1],
+      family => 'define',
+      type => 'define',
+      zerolen => 1,
+    }, $class;
+  }
+
+  sub visual { "(DEFINE)" }
+  sub qr { "(DEFINE)" }
+
+  sub insert {
+    my ($self, $tree) = @_;
+    push @$tree, $self;
+  }
+
+  sub walk { return }
+}
+
+
+{
   # (?{ ... })
   package Regexp::Parser::eval;
 

@@ -110,6 +110,7 @@ my @patterns = (
     '(?(?<!a)b|c)',
     '(?(?{1})c|d)',
     '(?(1)b|c)',
+    '(?(DEFINE)(?<foo>bar))',
 
     # Comments
     '(?#comment)abc',
